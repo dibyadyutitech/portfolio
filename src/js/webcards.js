@@ -4,14 +4,14 @@ const cardsData = [
     image: "photo/Online resume-bro.png",
     title: "Portfolio",
     // description: "Showcase your projects and skills in a visually appealing way.",
-    url: "https://"
+    url: "https://dibyadyuti.me/"
   },
   {
     number: "002",
     image: "photo/Coding workshop-bro.png",
     title: "Code",
     // description: "Share your thoughts and ideas with the world.",
-    url: "https://"
+    url: "https://dibyadyutidas.github.io/code/"
   },
   {
     number: "003",
@@ -25,7 +25,7 @@ const cardsData = [
     image: "photo/Playlist-bro.png",
     title: "Music",
     // description: "Feel the vibe of music.",
-    url: "https://"
+    url: "https://dibyadyutidas.github.io/FocusBeats/"
   },
   {
     number: "005",
