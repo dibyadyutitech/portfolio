@@ -6,7 +6,9 @@ class PrecisionClock {
         this.minuteHand = document.getElementById('minute-hand');
         this.secondHand = document.getElementById('second-hand');
         this.clockNumbersContainer = document.getElementById('clock-numbers');
-        
+
+        if (!this.digitalTimeElement || !this.digitalDateElement || !this.clockNumbersContainer) return;
+
         this.dimensions = this.getClockDimensions();
         this.init();
     }
@@ -19,47 +21,29 @@ class PrecisionClock {
 
     getClockDimensions() {
         const clockContainer = document.querySelector('.clock-container');
-        const containerWidth = clockContainer.offsetWidth;
-        
-        // Adjust dimensions based on container size
-        if (containerWidth >= 448) { // 28rem
-            return {
-                radius: 224,
-                numberRadius: 180,
-                hourHandLength: 112,
-                minuteHandLength: 154,
-                secondHandLength: 168
-            };
-        } else if (containerWidth >= 384) { // 24rem
-            return {
-                radius: 192,
-                numberRadius: 156,
-                hourHandLength: 96,
-                minuteHandLength: 132,
-                secondHandLength: 144
-            };
-        } else { // 20rem
-            return {
-                radius: 160,
-                numberRadius: 130,
-                hourHandLength: 80,
-                minuteHandLength: 110,
-                secondHandLength: 120
-            };
+        const containerWidth = clockContainer?.offsetWidth || 320;
+
+        if (containerWidth >= 448) {
+            return { radius: 224, numberRadius: 180, hourHandLength: 112, minuteHandLength: 154, secondHandLength: 168 };
+        } else if (containerWidth >= 384) {
+            return { radius: 192, numberRadius: 156, hourHandLength: 96, minuteHandLength: 132, secondHandLength: 144 };
+        } else {
+            return { radius: 160, numberRadius: 130, hourHandLength: 80, minuteHandLength: 110, secondHandLength: 120 };
         }
     }
 
     createClockNumbers() {
         const numbers = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-        
+        this.clockNumbersContainer.innerHTML = '';
+
         numbers.forEach(number => {
             const numberElement = document.createElement('div');
             numberElement.className = 'clock-number';
             numberElement.textContent = number;
-            
+
             const position = this.getNumberPosition(number, this.dimensions.numberRadius);
             numberElement.style.transform = `translate(-50%, -50%) translate(${position.x}px, ${position.y}px)`;
-            
+
             this.clockNumbersContainer.appendChild(numberElement);
         });
     }
@@ -75,11 +59,12 @@ class PrecisionClock {
         const hours = time.getHours() % 12;
         const minutes = time.getMinutes();
         const seconds = time.getSeconds();
+        const milliseconds = time.getMilliseconds();
 
         return {
             hourAngle: (hours * 30) + (minutes * 0.5),
-            minuteAngle: minutes * 6,
-            secondAngle: seconds * 6,
+            minuteAngle: minutes * 6 + (seconds * 0.1),
+            secondAngle: seconds * 6 + (milliseconds * 0.006)
         };
     }
 
@@ -87,15 +72,13 @@ class PrecisionClock {
         return time.toLocaleTimeString('en-US', {
             hour12: true,
             hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
+            minute: '2-digit'
         });
     }
 
     formatDate(time) {
         return time.toLocaleDateString('en-US', {
             weekday: 'long',
-            year: 'numeric',
             month: 'long',
             day: 'numeric'
         });
@@ -105,11 +88,9 @@ class PrecisionClock {
         const now = new Date();
         const angles = this.getTimeAngles(now);
 
-        // Update digital display
         this.digitalTimeElement.textContent = this.formatTime(now);
         this.digitalDateElement.textContent = this.formatDate(now);
 
-        // Update analog clock hands
         this.hourHand.style.height = `${this.dimensions.hourHandLength}px`;
         this.hourHand.style.transform = `translate(-50%, -100%) rotate(${angles.hourAngle}deg)`;
 
@@ -121,33 +102,26 @@ class PrecisionClock {
     }
 
     startClock() {
-        // Update immediately
         this.updateClock();
-        
-        // Then update every second
-        setInterval(() => {
-            this.updateClock();
-        }, 1000);
+        this.interval = setInterval(() => this.updateClock(), 16); // ~60 FPS for smooth seconds
     }
 
-    // Handle window resize to adjust dimensions
     handleResize() {
         this.dimensions = this.getClockDimensions();
-        
-        // Clear existing elements
-        this.clockNumbersContainer.innerHTML = '';
-        
-        // Recreate elements with new dimensions
         this.createClockNumbers();
         this.updateClock();
     }
+
+    stopClock() {
+        clearInterval(this.interval);
+    }
 }
 
-// Initialize the clock when the page loads
+let clock;
+
 document.addEventListener('DOMContentLoaded', () => {
-    const clock = new PrecisionClock();
-    
-    // Handle window resize
+    clock = new PrecisionClock();
+
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
@@ -157,10 +131,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add smooth transitions for better UX
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-        // Refresh clock when tab becomes visible again
-        const clock = new PrecisionClock();
+    if (!document.hidden && clock) {
+        clock.updateClock();
     }
 });

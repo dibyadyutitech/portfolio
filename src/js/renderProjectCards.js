@@ -1,88 +1,132 @@
-// renderProjectCards.js
-
-// Array of project data
-const projects = [
-  {
-      title: "Leetcode",
-      description: "Optimized DSA solutions with in-depth complexity analysis.",
-      image: "photo/leetcode.png",
-      category: "code",
-      codeLink: "https://github.com",
-      siteLink: "https://leetcode.com/u/Dibyadyuti_Das/"
-  },
-  {
-      title: "GitHub Profile README",
-      description: "A custom README that highlights key repositories, languages used, and achievements on GitHub.",
-      image: "photo/github.png",
-      category: "Open Source",
-      codeLink: "https://github.com/username",
-      siteLink: "https://github.com/DibyadyutiDas"
-  },
-  {
-      title: "Open Source",
-      description: "Contributions to open-source projects on GitHub. Includes bug fixes, new feature, and more.",
-      image: "photo/opensource.png",
-      category: "Open Source",
-      codeLink: "https://github.com/username?tab=repositories",
-      siteLink: "https://github.com/username?tab=repositories"
-  },
-  {
-      title: "Bulk-Buying Platform",
-      description: "A platform where users collaborate to buy in bulk and collectively save more together.",
-      image: "photo/bulk-buying.png",
-      category: "E-Commerce",
-      codeLink: "https://github.com/username/bulkybuy-platform",
-      siteLink: "https://bulkybuy-platform.com"
-  },
-  {
-      title: "Custom Handwriting",
-      description: "Users can select from different handwriting or even match your unique handwriting.",
-      image: "photo/text-handwriting_converter.png",
-      category: "Machine Learning",
-      codeLink: "https://github.com/username/handwriting-converter",
-      siteLink: "https://handwriting-converter.com"
-  },
-  {
-      title: "Food Finder",
-      description: "A web app that helps users discover pure vegetarian food options in different locations.",
-      image: "photo/food-finder.png",
-      category: "Web App",
-      codeLink: "https://github.com/dibyadyutidas/FoodFinder",
-      siteLink: "https://your-food-finder-demo.com"
+async function fetchProjects() {
+  try {
+    const res = await fetch('src/data/projects.json');
+    if (!res.ok) throw new Error('Failed to load projects.json');
+    const data = await res.json();
+    return data.projects || [];
+  } catch (err) {
+    console.error('Error loading projects:', err);
+    return [];
   }
-];
+}
 
-// Function to render project cards
-function renderProjectCards() {
-  const projectsContainer = document.getElementById('projects-container');
+function createProjectItem(project, index, total) {
+  const div = document.createElement('div');
+  div.className = `project-item ${index === 0 ? 'active' : ''}`;
+  div.setAttribute('data-project', index);
+  div.setAttribute('tabindex', '0');
+  div.setAttribute('role', 'article');
+  div.setAttribute('aria-label', `Project ${index + 1} of ${total}`);
 
-  projects.forEach(project => {
-      const projectCard = document.createElement('div');
-      projectCard.classList.add('project-card');
+  div.innerHTML = `
+    <div class="project-header">
+      <div class="project-meta">
+        <span class="project-number">${project.number}</span>
+        <span class="project-year">${project.year}</span>
+        <span class="project-status ${project.status.toLowerCase()}">${project.status}</span>
+      </div>
+    </div>
+    <div class="project-content">
+      <h3 class="project-title">${project.title}</h3>
+      <p class="project-description">${project.description}</p>
+      <div class="project-stack">
+        ${project.stack.map(tech => `<span class="stack-item">${tech}</span>`).join('')}
+      </div>
+      <div class="project-links">
+        <a href="${project.links.primary.url}" class="project-link" target="_blank">${project.links.primary.text}</a>
+        <a href="${project.links.secondary.url}" class="project-link secondary" target="_blank">${project.links.secondary.text}</a>
+      </div>
+    </div>
+  `;
+  return div;
+}
 
-      projectCard.innerHTML = `
-          <div class="image-container">
-              <div class="image-inner">
-                  <div class="image-front">
-                      <img src="${project.image}" alt="${project.title}">
-                  </div>
-              </div>
-              <span class="category-tag">${project.category}</span>
-          </div>
-          <div class="card-content">
-              <h3>${project.title}</h3>
-              <p>${project.description}</p>
-              <div class="card-links">
-                  <a href="${project.siteLink}" target="_blank" rel="noopener noreferrer" class="link">
-                      <button>View Site</button>
-                  </a>
-              </div>
-          </div>
-      `;
+function createPreviewImage(project, index) {
+  const div = document.createElement('div');
+  div.className = `preview-image ${index === 0 ? 'active' : ''}`;
+  div.setAttribute('data-project', index);
 
-      projectsContainer.appendChild(projectCard);
+  const img = document.createElement('img');
+  img.src = project.image.src;
+  img.alt = project.image.alt;
+  img.loading = "lazy";
+  img.onload = () => img.classList.add('loaded');
+
+  div.appendChild(img);
+  return div;
+}
+
+function updateActiveProject(index, total) {
+  const items = document.querySelectorAll('.project-item');
+  const previews = document.querySelectorAll('.preview-image');
+  const progressFill = document.getElementById('progress-fill');
+  const currentText = document.getElementById('current-project');
+
+  items.forEach((el, i) => el.classList.toggle('active', i === index));
+  previews.forEach((el, i) => el.classList.toggle('active', i === index));
+
+  if (progressFill) progressFill.style.width = `${((index + 1) / total) * 100}%`;
+  if (currentText) currentText.textContent = String(index + 1).padStart(2, '0');
+}
+
+function addProjectEventListeners(total) {
+  document.querySelectorAll('.project-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const index = parseInt(item.dataset.project);
+      updateActiveProject(index, total);
+    });
+
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const index = parseInt(item.dataset.project);
+        updateActiveProject(index, total);
+      }
+    });
   });
 }
 
-// Call the function to render the project cards
-document.addEventListener('DOMContentLoaded', renderProjectCards);
+function addScrollSync(total) {
+  const items = document.querySelectorAll('.project-item');
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.5
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const index = parseInt(entry.target.dataset.project);
+        updateActiveProject(index, total);
+      }
+    });
+  }, observerOptions);
+
+  items.forEach(item => observer.observe(item));
+}
+
+async function renderProjects() {
+  const projects = await fetchProjects();
+  const list = document.getElementById('project-list');
+  const preview = document.getElementById('preview-container');
+  const totalSpan = document.getElementById('total-projects');
+
+  if (!list || !preview) return;
+
+  list.innerHTML = '';
+  preview.innerHTML = '';
+
+  projects.forEach((project, i) => {
+    list.appendChild(createProjectItem(project, i, projects.length));
+    preview.appendChild(createPreviewImage(project, i));
+  });
+
+  if (totalSpan) totalSpan.textContent = String(projects.length).padStart(2, '0');
+
+  addProjectEventListeners(projects.length);
+  addScrollSync(projects.length);
+  updateActiveProject(0, projects.length);
+}
+
+document.addEventListener('DOMContentLoaded', renderProjects);

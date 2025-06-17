@@ -142,7 +142,7 @@
       <!-- Right Side Cards (With Scrollable Feature) -->
       <div class="cards-wrapper">
         <div class="card-container" id="card-container">
-            <script src="src/js/webcards.js"></script>
+            <script script src="src/js/renderWebCards.js"></script>
         </div>
       </div>
   </div>
@@ -150,19 +150,42 @@
 
 
 
-<!-- Projects Section -->
-<section id="projects" class="Project">
-    <div class="container">
-        <div class="header">
-        <h2>Projects</h2>
-    <!--       <p>Explore my latest works and creative endeavors in web development, design, and interactive experiences.</p> -->
-        </div>
 
-        <div id="projects-container" class="projects-grid">
-            <script src="src/js/renderProjectCards.js"></script>
+<section class="projects" id="work">
+<!-- Top Heading (Projects) -->
+    <div class="header">
+        <h2>Projects</h2>
+    </div>
+    <!-- <div class="hero-project"> -->
+        <div class="hero-content">
+          <div class="hero-meta">
+            <span class="meta-item">Selected Work</span>
+            <span class="meta-divider">—</span>
+            <span class="meta-item">2023–2024</span>
+          </div>
+          <h1 class="hero-title">Building products that matter</h1>
+          <p class="hero-description">
+            A collection of projects that push boundaries, solve real problems, and create meaningful experiences through thoughtful design and engineering.
+          </p>
         </div>
-    </div>    
-</section>
+    <!-- </div> -->
+
+      <div class="projects-container">
+        <div class="project-list" id="project-list"></div>
+        <div class="project-preview">
+          <div class="preview-container" id="preview-container"></div>
+          <!-- <div class="progress-indicator"> -->
+            <!-- <div class="progress-track"> -->
+              <!-- <div class="progress-fill" id="progress-fill"></div> -->
+            </div>
+            <div class="progress-text">
+              <span class="current-project" id="current-project">01</span>
+              <span class="total-projects" id="total-projects">06</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
 
 
@@ -191,7 +214,7 @@
         </div>
 
         <div class="footer">
-            <p class="brand">Time-Zone</p>
+            <p class="brand">Here’s what time it is for me</p>
         </div>
     </div>
 </section>
@@ -233,6 +256,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="src/js/script.js"></script>
+    <script src="src/js/renderProjectCards.js"></script>
     <script src="src/js/clock.js"></script>
 
 </body>

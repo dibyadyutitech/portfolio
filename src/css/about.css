@@ -1,12 +1,12 @@
-/* About Section - Creative Styling */
+/* About Section - Clean Layout, No Box */
 #about {
     max-width: 1000px;
     margin: 60px auto;
     padding: 60px 30px;
-    background: #f9f9f9; /* Light grey background */
-    color: #303030; /* Dark text color for readability */
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    background: transparent; /* ❌ remove background */
+    color: #303030;
+    border-radius: 0; /* ❌ remove rounded corners */
+    box-shadow: none; /* ❌ remove box-shadow */
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -16,7 +16,7 @@
     gap: 30px;
 }
 
-/* About Section Container */
+/* Container Still Needed */
 .about-container {
     display: flex;
     align-items: center;
@@ -24,7 +24,7 @@
     gap: 30px;
 }
 
-/* Image Styling */
+/* Image */
 #about .about-image {
     width: 180px;
     height: 180px;
@@ -45,7 +45,7 @@
     transform: scale(1.1);
 }
 
-/* About Text Styling */
+/* Text */
 #about .about-text {
     max-width: 600px;
 }
@@ -58,8 +58,7 @@
     letter-spacing: 2px;
     position: relative;
     color: var(--text-light);
-    margin-bottom: 20px;
-    font-family: 'Poppins', sans-serif; /* Smooth modern font */
+    font-family: 'Poppins', sans-serif;
 }
 
 #about h2::after {
@@ -67,7 +66,7 @@
     display: block;
     width: 80px;
     height: 4px;
-    background: var(--primary-color); /* Primary color underline */
+    background: var(--primary-color);
     margin: 8px auto 0;
     border-radius: 5px;
 }
@@ -76,50 +75,23 @@
     transform: scaleX(1);
 }
 
-/* Paragraph Styling */
+/* Paragraph */
 #about p {
     font-size: 1.2rem;
     line-height: 1.8;
     color: #555;
     margin-top: 15px;
     font-weight: 400;
-    font-family: Helvetica, Arial; /* Elegant serif font for readability */
+    font-family: Helvetica, Arial;
 }
 
-
-/* Floating Background Effect */
-#about::before, #about::after {
-    content: "";
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    z-index: 0;
-    animation: floating 6s infinite alternate ease-in-out;
-}
-
-#about::before {
-    top: -30px;
-    left: -30px;
-}
-
+/* Remove floating background shapes */
+#about::before,
 #about::after {
-    bottom: -30px;
-    right: -30px;
+    display: none; /* ❌ completely remove floating circle effects */
 }
 
-/* Floating Animation */
-@keyframes floating {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(20px);
-    }
-}
-
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
     #about {
         flex-direction: column;

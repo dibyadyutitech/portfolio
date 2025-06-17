@@ -1,115 +1,193 @@
+// Enhanced Portfolio Script with Fixed Fallback and Modern Features
+
+// =============================================================================
+// FALLBACK AND ERROR HANDLING
+// =============================================================================
+
 // Show fallback if site doesn't load within 8 seconds
 const TIMEOUT = 8000;
-const fallback = document.getElementById('fallback');
-const app = document.getElementById('app');
 
-setTimeout(() => {
+// Safely get elements with null checks
+const getFallbackElement = () => document.getElementById('fallback');
+const getAppElement = () => document.getElementById('app');
+
+// Enhanced fallback handler
+const handleFallback = () => {
+    const fallback = getFallbackElement();
+    const app = getAppElement();
+    
     if (!document.body.classList.contains('loaded')) {
-        app.style.display = 'none'; // Hide main content
-        fallback.style.display = 'flex'; // Show 404 page
+        if (app) app.style.display = 'none';
+        if (fallback) fallback.style.display = 'flex';
+        console.warn('Site loading timeout - showing fallback');
     }
-}, TIMEOUT);
+};
 
-// Event listener for window load
+// Set timeout for fallback
+setTimeout(handleFallback, TIMEOUT);
+
+// Enhanced window load handler
 window.addEventListener('load', function () {
-    const fallback = document.getElementById('fallback');
+    const fallback = getFallbackElement();
+    
     if (fallback) {
         fallback.classList.add('hidden');
         setTimeout(() => {
-            fallback.style.display = 'none'; // Hide fallback after loading
+            fallback.style.display = 'none';
         }, 500);
     }
+    
+    // Mark body as loaded
+    document.body.classList.add('loaded');
 });
 
 // Function to handle 404 errors
 function show404() {
-    app.style.display = 'none'; // Hide main content
-    fallback.style.display = 'flex'; // Show 404 page
+    const app = getAppElement();
+    const fallback = getFallbackElement();
+    
+    if (app) app.style.display = 'none';
+    if (fallback) fallback.style.display = 'flex';
 }
 
+// =============================================================================
+// CUSTOM CURSOR ANIMATION
+// =============================================================================
 
-       // Custom cursor animation
-        const cursor = document.querySelector('.custom-cursor');
-        // const cursorText = document.querySelector('.cursor-text');
-        let cursorVisible = false;
-
+class CustomCursor {
+    constructor() {
+        this.cursor = document.querySelector('.custom-cursor');
+        this.cursorVisible = false;
+        this.init();
+    }
+    
+    init() {
+        if (!this.cursor) return;
+        
+        this.bindEvents();
+        this.setupHoverEffects();
+    }
+    
+    bindEvents() {
         // Update cursor position
         document.addEventListener('mousemove', (e) => {
-            if (!cursorVisible) {
-                cursor.style.opacity = '1';
-                cursorVisible = true;
+            if (!this.cursorVisible) {
+                this.cursor.style.opacity = '1';
+                this.cursorVisible = true;
             }
-            cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+            this.cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
         });
 
         // Hide cursor when leaving window
         document.addEventListener('mouseleave', () => {
-            cursor.style.opacity = '0';
-            cursorVisible = false;
+            this.cursor.style.opacity = '0';
+            this.cursorVisible = false;
         });
-
-        // Add hover effects for interactive elements
-        const interactiveElements = document.querySelectorAll('a, button, .project-card, .web-card, .nav-links a, .social-icons a');
+    }
+    
+    setupHoverEffects() {
+        const interactiveElements = document.querySelectorAll(
+            'a, button, .project-card, .web-card, .nav-links a, .social-icons a, [role="button"]'
+        );
         
         interactiveElements.forEach(element => {
             element.classList.add('hover-trigger');
             
             element.addEventListener('mouseenter', (e) => {
-                cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px) scale(1.5)`;
-                cursorText.style.transform = `translate(${e.clientX + 15}px, ${e.clientY - 15}px)`;
-                cursorText.classList.add('visible');
+                this.cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px) scale(1.5)`;
             });
 
             element.addEventListener('mouseleave', (e) => {
-                cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px) scale(1)`;
-                cursorText.classList.remove('visible');
+                this.cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px) scale(1)`;
             });
         });
+    }
+}
 
-        // Navigation and Menu Toggle Logic
-        const nav = document.getElementById('mainNav');
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const hero = document.querySelector('.hero');
+// =============================================================================
+// NAVIGATION AND MENU LOGIC
+// =============================================================================
 
-        // Scroll Logic
+class NavigationManager {
+    constructor() {
+        this.nav = document.getElementById('mainNav');
+        this.menuToggle = document.getElementById('menuToggle');
+        this.mobileMenu = document.getElementById('mobileMenu');
+        this.hero = document.querySelector('.hero');
+        
+        this.init();
+    }
+    
+    init() {
+        if (!this.nav || !this.menuToggle || !this.mobileMenu) {
+            console.warn('Navigation elements not found');
+            return;
+        }
+        
+        this.bindScrollEvents();
+        this.bindMenuEvents();
+        this.bindSmoothScroll();
+    }
+    
+    bindScrollEvents() {
+        let ticking = false;
+        
         window.addEventListener('scroll', () => {
-            const scrollPos = window.scrollY;
-            const heroBottom = hero.offsetTop + hero.offsetHeight;
-
-            // Hide navbar and show menu toggle after hero section
-            if (scrollPos > heroBottom - 100) {
-                nav.classList.add('hidden');
-                menuToggle.classList.add('visible');
-            } else {
-                nav.classList.remove('hidden');
-                menuToggle.classList.remove('visible');
-                mobileMenu.classList.remove('active');
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    this.handleScroll();
+                    this.animateCards();
+                    ticking = false;
+                });
+                ticking = true;
             }
-
-            // Card animations on scroll
-            document.querySelectorAll('.card').forEach(card => {
-                const cardTop = card.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (cardTop < windowHeight * 0.8) {
-                    card.classList.add('visible');
-                }
-            });
         });
+    }
+    
+    handleScroll() {
+        const scrollPos = window.scrollY;
+        const heroBottom = this.hero ? this.hero.offsetTop + this.hero.offsetHeight : 0;
 
+        // Hide navbar and show menu toggle after hero section
+        if (scrollPos > heroBottom - 100) {
+            this.nav.classList.add('hidden');
+            this.menuToggle.classList.add('visible');
+        } else {
+            this.nav.classList.remove('hidden');
+            this.menuToggle.classList.remove('visible');
+            this.mobileMenu.classList.remove('active');
+        }
+    }
+    
+    animateCards() {
+        const cards = document.querySelectorAll('.card, .project-card, .web-card');
+        
+        cards.forEach(card => {
+            const cardTop = card.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+            
+            if (cardTop < windowHeight * 0.8) {
+                card.classList.add('visible');
+            }
+        });
+    }
+    
+    bindMenuEvents() {
         // Menu Toggle
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
+        this.menuToggle.addEventListener('click', () => {
+            this.mobileMenu.classList.toggle('active');
         });
 
         // Close menu when clicking a link
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
+        const mobileLinks = this.mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
+                this.mobileMenu.classList.remove('active');
             });
         });
-
+    }
+    
+    bindSmoothScroll() {
         // Smooth scroll for all anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
@@ -123,159 +201,327 @@ function show404() {
                 }
             });
         });
+    }
+}
 
+// =============================================================================
+// THEME MANAGEMENT
+// =============================================================================
+
+class ThemeManager {
+    constructor() {
+        this.init();
+    }
+    
+    init() {
+        // Initialize theme based on system preference
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
         
-        AOS.init();
-
-        function toggleMenu() {
-            document.querySelector('.nav-right').classList.toggle('active');
+        if (savedTheme) {
+            this.setTheme(savedTheme);
+        } else if (prefersDark) {
+            this.setTheme('dark');
         }
+        
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                this.setTheme(e.matches ? 'dark' : 'light');
+            }
+        });
+    }
+    
+    toggleTheme() {
+        const currentTheme = document.body.classList.contains('dark') ? 'dark' : 'light';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        this.setTheme(newTheme);
+    }
+    
+    setTheme(theme) {
+        document.body.classList.toggle('dark', theme === 'dark');
+        
+        const nav = document.querySelector('nav');
+        const footer = document.querySelector('footer');
+        
+        if (nav) nav.classList.toggle('dark', theme === 'dark');
+        if (footer) footer.classList.toggle('dark', theme === 'dark');
 
-        function toggleTheme() {
-            document.body.classList.toggle('dark');
-            document.querySelector('nav').classList.toggle('dark');
-            document.querySelector('footer').classList.toggle('dark');
-
-            const themeIcon = document.querySelector('.theme-toggle i');
-            if (document.body.classList.contains('dark')) {
+        const themeIcon = document.querySelector('.theme-toggle i');
+        if (themeIcon) {
+            if (theme === 'dark') {
                 themeIcon.classList.replace('fa-moon', 'fa-sun');
             } else {
                 themeIcon.classList.replace('fa-sun', 'fa-moon');
             }
         }
+        
+        localStorage.setItem('theme', theme);
+    }
+}
 
-// website
+// =============================================================================
+// CARD CAROUSEL FUNCTIONALITY
+// =============================================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    const cardContainer = document.querySelector('.card-container');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const cards = document.querySelectorAll('.web-card');
+class CardCarousel {
+    constructor() {
+        this.cardContainer = document.querySelector('.card-container');
+        this.prevBtn = document.getElementById('prevBtn');
+        this.nextBtn = document.getElementById('nextBtn');
+        this.cards = document.querySelectorAll('.web-card');
+        
+        this.currentIndex = 0;
+        this.cardsPerView = this.getCardsPerView();
+        this.maxIndex = Math.max(0, this.cards.length - this.cardsPerView);
+        
+        this.init();
+    }
     
-    let currentIndex = 0;
-    const cardsPerView = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1200 ? 2 : 3;
-    const maxIndex = Math.max(0, cards.length - cardsPerView);
+    init() {
+        if (!this.cardContainer || this.cards.length === 0) return;
+        
+        this.bindEvents();
+        this.setupDragScroll();
+        this.updateButtonVisibility();
+    }
     
+    getCardsPerView() {
+        const width = window.innerWidth;
+        if (width <= 768) return 1;
+        if (width <= 1200) return 2;
+        return 3;
+    }
     
-    function scrollToIndex(index) {
-        const cardWidth = cardContainer.offsetWidth / cardsPerView;
-        cardContainer.scrollTo({
+    bindEvents() {
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => this.navigate(-1));
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => this.navigate(1));
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const newCardsPerView = this.getCardsPerView();
+            if (newCardsPerView !== this.cardsPerView) {
+                this.cardsPerView = newCardsPerView;
+                this.maxIndex = Math.max(0, this.cards.length - this.cardsPerView);
+                this.currentIndex = 0;
+                this.scrollToIndex(0);
+                this.updateButtonVisibility();
+            }
+        });
+    }
+    
+    navigate(direction) {
+        const newIndex = this.currentIndex + direction;
+        if (newIndex >= 0 && newIndex <= this.maxIndex) {
+            this.currentIndex = newIndex;
+            this.scrollToIndex(this.currentIndex);
+        }
+    }
+    
+    scrollToIndex(index) {
+        const cardWidth = this.cardContainer.offsetWidth / this.cardsPerView;
+        this.cardContainer.scrollTo({
             left: index * cardWidth,
             behavior: 'smooth'
         });
     }
     
-    prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) {
-            currentIndex--;
-            scrollToIndex(currentIndex);
-        }
-    });
+    setupDragScroll() {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        this.cardContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            this.cardContainer.classList.add('dragging');
+            startX = e.pageX - this.cardContainer.offsetLeft;
+            scrollLeft = this.cardContainer.scrollLeft;
+        });
+
+        this.cardContainer.addEventListener('mouseleave', () => {
+            isDown = false;
+            this.cardContainer.classList.remove('dragging');
+        });
+
+        this.cardContainer.addEventListener('mouseup', () => {
+            isDown = false;
+            this.cardContainer.classList.remove('dragging');
+        });
+
+        this.cardContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - this.cardContainer.offsetLeft;
+            const walk = (x - startX) * 2;
+            this.cardContainer.scrollLeft = scrollLeft - walk;
+        });
+    }
     
-    nextBtn.addEventListener('click', () => {
-        if (currentIndex < maxIndex) {
-            currentIndex++;
-            scrollToIndex(currentIndex);
+    updateButtonVisibility() {
+        if (this.prevBtn) {
+            this.prevBtn.style.opacity = this.currentIndex === 0 ? '0.5' : '1';
         }
-    });
+        if (this.nextBtn) {
+            this.nextBtn.style.opacity = this.currentIndex === this.maxIndex ? '0.5' : '1';
+        }
+    }
+}
+
+// =============================================================================
+// IMAGE CAROUSEL
+// =============================================================================
+
+class ImageCarousel {
+    constructor() {
+        this.images = document.querySelectorAll('.carousel img');
+        this.index = 1;
+        this.init();
+    }
     
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        const newCardsPerView = window.innerWidth <= 768 ? 1 : window.innerWidth <= 1200 ? 2 : 3;
-        if (newCardsPerView !== cardsPerView) {
-            currentIndex = 0;
-            scrollToIndex(0);
-            updateButtonVisibility();
-        }
-    });
+    init() {
+        if (this.images.length === 0) return;
+        
+        this.rotateImages();
+        setInterval(() => this.rotateImages(), 3000);
+    }
     
-    // Initial setup
-    updateButtonVisibility();
-});
+    rotateImages() {
+        this.images.forEach(img => img.className = '');
+        
+        const prevIndex = (this.index - 1 + this.images.length) % this.images.length;
+        const nextIndex = (this.index + 1) % this.images.length;
+        
+        this.images[prevIndex].classList.add('left');
+        this.images[this.index].classList.add('center');
+        this.images[nextIndex].classList.add('right');
+        
+        this.index = (this.index + 1) % this.images.length;
+    }
+}
 
+// =============================================================================
+// PERFORMANCE OPTIMIZATIONS
+// =============================================================================
 
-
-
-
-
-
-
-
-
-
-
-const images = document.querySelectorAll('.carousel img');
-        let index = 1;
-
-        function rotateImages() {
-            images.forEach(img => img.className = '');
-            images[(index - 1 + images.length) % images.length].classList.add('left');
-            images[index].classList.add('center');
-            images[(index + 1) % images.length].classList.add('right');
-            index = (index + 1) % images.length;
+class PerformanceOptimizer {
+    constructor() {
+        this.init();
+    }
+    
+    init() {
+        this.setupLazyLoading();
+        this.setupReducedMotion();
+        this.setupVisibilityChange();
+    }
+    
+    setupLazyLoading() {
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            imageObserver.unobserve(img);
+                        }
+                    }
+                });
+            });
+            
+            const lazyImages = document.querySelectorAll('img[data-src]');
+            lazyImages.forEach(img => imageObserver.observe(img));
         }
+    }
+    
+    setupReducedMotion() {
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        
+        if (prefersReducedMotion.matches) {
+            document.documentElement.style.setProperty('--transition-duration', '0ms');
+        }
+        
+        prefersReducedMotion.addEventListener('change', (e) => {
+            document.documentElement.style.setProperty(
+                '--transition-duration', 
+                e.matches ? '0ms' : '300ms'
+            );
+        });
+    }
+    
+    setupVisibilityChange() {
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                document.body.classList.add('paused');
+            } else {
+                document.body.classList.remove('paused');
+            }
+        });
+    }
+}
 
-        setInterval(rotateImages, 3000);
+// =============================================================================
+// INITIALIZATION
+// =============================================================================
 
+// Global theme toggle function (for backward compatibility)
+function toggleTheme() {
+    if (window.themeManager) {
+        window.themeManager.toggleTheme();
+    }
+}
 
+// Global menu toggle function (for backward compatibility)
+function toggleMenu() {
+    const navRight = document.querySelector('.nav-right');
+    if (navRight) {
+        navRight.classList.toggle('active');
+    }
+}
 
-
-
-// Drag to scroll
-
-const scrollContainer = document.querySelector('.card-container');
-let isDown = false;
-let startX;
-let scrollLeft;
-
-scrollContainer.addEventListener('mousedown', (e) => {
-  isDown = true;
-  scrollContainer.classList.add('dragging');
-  startX = e.pageX - scrollContainer.offsetLeft;
-  scrollLeft = scrollContainer.scrollLeft;
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize AOS if available
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+    }
+    
+    // Initialize all components
+    window.customCursor = new CustomCursor();
+    window.navigationManager = new NavigationManager();
+    window.themeManager = new ThemeManager();
+    window.cardCarousel = new CardCarousel();
+    window.imageCarousel = new ImageCarousel();
+    window.performanceOptimizer = new PerformanceOptimizer();
+    
+    // Mark as loaded
+    document.body.classList.add('loaded');
+    
+    console.log('Portfolio initialized successfully');
 });
 
-scrollContainer.addEventListener('mouseleave', () => {
-  isDown = false;
-  scrollContainer.classList.remove('dragging');
+// Handle errors gracefully
+window.addEventListener('error', (e) => {
+    console.error('Portfolio error:', e.error);
+    // Could implement error reporting here
 });
 
-scrollContainer.addEventListener('mouseup', () => {
-  isDown = false;
-  scrollContainer.classList.remove('dragging');
-});
-
-scrollContainer.addEventListener('mousemove', (e) => {
-  if (!isDown) return;
-  e.preventDefault();
-  const x = e.pageX - scrollContainer.offsetLeft;
-  const walk = (x - startX) * 2;
-  scrollContainer.scrollLeft = scrollLeft - walk;
-});
-
-
-
-
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("card-container");
-  
-    cardsData.forEach(card => {
-      const div = document.createElement("div");
-      div.className = "web-card";
-      div.innerHTML = `
-        <a href="${card.url}" target="_blank" class="card-link">
-            <span class="card-number">${card.number}</span>
-            <div class="card-icon">
-                <img src="${card.image}" alt="${card.title}">
-            </div>
-        <h3>${card.title}</h3>
-        </a>
-        `;
-      container.appendChild(div);
-    });
-  });
-
-
+// Export for external use
+window.PortfolioComponents = {
+    CustomCursor,
+    NavigationManager,
+    ThemeManager,
+    CardCarousel,
+    ImageCarousel,
+    PerformanceOptimizer
+};

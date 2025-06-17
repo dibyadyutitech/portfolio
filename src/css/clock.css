@@ -87,10 +87,16 @@
 }
 
 .second-hand {
-    width: 2px;
-    background-color: #ef4444;
-    z-index: 4;
-    transition: transform 0.075s ease-out;
+  width: 2px;
+  background-color: #ef4444;
+  z-index: 4;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  transform: translate(-50%, -100%) rotate(0deg);
+  border-radius: 4px;
+  transition: transform 0.075s linear;
 }
 
 /* Center Dot */
@@ -125,7 +131,7 @@
 }
 
 .brand {
-    font-size: 0.875rem;
+    font-size: 1rem;
     color: #9ca3af;
     font-weight: 300;
 }

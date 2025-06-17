@@ -20,7 +20,7 @@
   display: block;
   width: 100px;
   height: 4px;
-  background: var(--primary-color); /* Primary color underline */
+  background: var(--primary-color);
   margin: 8px auto 0;
   border-radius: 5px;
 }
@@ -61,11 +61,11 @@
   scroll-behavior: smooth;
   padding: 20px 0;
   width: 100%;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
 }
 
 .card-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari */
+  display: none;
 }
 
 .web-card {
@@ -106,13 +106,18 @@
 }
 
 .card-icon img {
-  height: 200px;
-  width: 270px;
+  max-width: 160px;
+  max-height: 120px;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  border-radius: 10px;  /* Optional: rounded corners */
-  background-color: #fff; /* Optional: for consistency if images have transparency */
+  border-radius: 10px;
+  background-color: #fff;
   padding: 5px;
+  display: block;
+  margin: 0 auto;
 }
+
 
 .web-card h3 {
   font-size: 1.2rem;
@@ -125,74 +130,116 @@
   color: #555;
 }
 
-/* Media Queries for Responsiveness */
+/* === Media Queries === */
 @media (max-width: 1200px) {
   .content {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .left-text {
-      justify-content: center;
-      text-align: center;
-      margin-bottom: 20px;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 20px;
   }
 
   .left-text h3 {
-      font-size: 2rem;
+    font-size: 2rem;
   }
 
   .card-container {
-      flex-wrap: wrap; /* Allow cards to wrap */
-      justify-content: center; /* Center cards */
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .web-card {
-      min-width: 80%; /* Allow cards to take more width on smaller screens */
-      max-width: 80%;
-      margin: 10px 0; /* Add margin for spacing */
+    min-width: 80%;
+    max-width: 80%;
+    margin: 10px 0;
   }
 }
 
 @media (max-width: 768px) {
   .content {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   .left-text {
-      justify-content: center;
+    justify-content: center;
   }
 
   .left-text h3 {
-      text-align: center;
-      font-size: 2rem;
+    text-align: center;
+    font-size: 2rem;
   }
 
   .card-container {
-      scroll-snap-type: x mandatory;
+    scroll-snap-type: x mandatory;
   }
 
   .web-card {
-      min-width: 90%; /* Allow cards to take more width on smaller screens */
-      margin: auto;
+    min-width: 90%;
+    margin: auto;
+  }
+
+  .card-icon img {
+    max-width: 220px;
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .card-container {
+    gap: 12px;
+    padding: 0 8px;
+  }
+  .web-card {
+    width: 40vw;
+    min-width: 120px;
+    max-width: 160px;
+    aspect-ratio: 1 / 1; /* Makes the card square */
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+  }
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  .card-content {
+    margin-top: 8px;
+    text-align: center;
+  }
+  .left-text h3 {
+    text-align: left;
+    margin-left: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .header h2 {
-      font-size: 2rem; /* Smaller font size for mobile */
+    font-size: 2rem;
   }
 
   .web-card {
-      height: auto; /* Allow height to adjust based on content */
-      padding: 20px; /* Reduce padding */
+    height: auto;
+    padding: 20px;
   }
 
   .web-card h3 {
-      font-size: 1.5rem; /* Adjust heading size */
+    font-size: 1.5rem;
   }
 
   .web-card p {
-      font-size: 0.9rem; /* Adjust paragraph size */
+    font-size: 0.9rem;
+  }
+
+  .card-icon img {
+    max-width: 180px;
   }
 }
