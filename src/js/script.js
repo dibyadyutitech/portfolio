@@ -119,16 +119,21 @@ class NavigationManager {
     }
     
     init() {
-        if (!this.nav || !this.menuToggle || !this.mobileMenu) {
-            console.warn('Navigation elements not found');
-            return;
+        const missing = [];
+        if (!this.nav) missing.push('nav');
+        if (!this.menuToggle) missing.push('menuToggle');
+        if (!this.mobileMenu) missing.push('mobileMenu');
+        if (missing.length) {
+            console.warn(`Navigation elements not found: ${missing.join(', ')}`);
+            return false;
         }
-        
+
         this.bindScrollEvents();
         this.bindMenuEvents();
         this.bindSmoothScroll();
+        return true;
     }
-    
+
     bindScrollEvents() {
         let ticking = false;
         
