@@ -53,15 +53,15 @@
   
 @media (max-width:768px) {
     .card-container {
-        justify-content: center;
-        overflow-x: scroll;
+        justify-content: flex-start;
+        overflow-x: auto;
     }
   
     .web-card,
     .project-card {
         justify-content: center;
         align-items: center;
-        width: 90%;
+        flex-shrink: 0;
     }
   }
 

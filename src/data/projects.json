@@ -96,7 +96,7 @@
       "id": 5,
       "number": "05",
       "year": "2025",
-      "status": "Live",
+      "status": "Prototype",
       "title": "Food Finder",
       "description": "A web app that helps users discover pure vegetarian food options in different locations.",
       "stack": ["React", "Tailwind CSS", "Node.js", "MongoDB", "Google Maps API"],
@@ -113,29 +113,6 @@
       "image": {
         "src": "photo/food-finder.png",
         "alt": "Food Finder App"
-      }
-    },
-    {
-      "id": 6,
-      "number": "06",
-      "year": "2024",
-      "status": "Live",
-      "title": "Leetcode",
-      "description": "Optimized DSA solutions with in-depth complexity analysis.",
-      "stack": ["C++", "Data Structures", "Algorithms"],
-      "links": {
-        "primary": {
-          "text": "View Profile →",
-          "url": "https://leetcode.com/u/Dibyadyuti_Das/"
-        },
-        "secondary": {
-          "text": "",
-          "url": "https://github.com"
-        }
-      },
-      "image": {
-        "src": "photo/leetcode.png",
-        "alt": "Leetcode Solutions"
       }
     }
   ]

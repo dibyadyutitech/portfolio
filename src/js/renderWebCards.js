@@ -23,6 +23,12 @@ async function loadWebCards() {
       `;
       webCardsContainer.appendChild(cardDiv);
     });
+
+    // Reset scroll position to start from the first card
+    setTimeout(() => {
+      webCardsContainer.scrollLeft = 0;
+    }, 100);
+    
   } catch (error) {
     console.error("Error loading web cards:", error);
   }
