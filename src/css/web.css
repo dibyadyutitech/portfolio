@@ -1,3 +1,50 @@
+@media (min-width: 769px) {
+  .card-icon img,
+  .card-image {
+    margin: 0 auto;
+    display: block;
+  }
+
+  .web-card {
+    min-width: 270px;
+    max-width: 270px;
+    width: 270px;
+    height: 360px;
+    padding: 30px;
+  }
+
+  .card-icon {
+    height: 120px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .card-icon img {
+    max-width: 160px;
+    max-height: 120px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 5px;
+  }
+
+  .card-image {
+    max-width: 200px;
+    max-height: 150px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    background-color: #fff;
+    padding: 5px;
+    margin: 10px auto;
+  }
+}
+
 #websites {
   padding: 50px 20px;
   display: flex;
@@ -61,8 +108,8 @@
   scroll-behavior: smooth;
   padding: 20px 0;
   width: 100%;
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
 }
@@ -85,7 +132,7 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   scroll-snap-align: start;
 }
 
@@ -142,7 +189,6 @@
   text-align: center;
 }
 
-
 .web-card h3 {
   font-size: 1.2rem;
   color: #222;
@@ -156,6 +202,12 @@
 
 /* === Media Queries === */
 @media (max-width: 1200px) {
+  .card-icon img,
+  .card-image {
+    margin: 0 auto;
+    display: block;
+  }
+
   .content {
     flex-direction: column;
     align-items: center;
@@ -250,7 +302,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
   }
-  
+
   .web-card {
     min-width: 200px;
     max-width: 200px;
@@ -260,7 +312,7 @@
     padding: 15px;
     scroll-snap-align: start;
   }
-  
+
   .card-icon {
     margin: 15px 0;
     height: 100px;
@@ -268,7 +320,7 @@
     justify-content: center;
     align-items: center;
   }
-  
+
   .card-icon img {
     max-width: 140px;
     max-height: 90px;
@@ -289,17 +341,17 @@
     padding: 3px;
     margin: 10px auto;
   }
-  
+
   .web-card h3 {
     font-size: 1rem;
     margin: 10px 0 5px 0;
   }
-  
+
   .web-card p {
     font-size: 0.85rem;
     margin: 5px 0;
   }
-  
+
   .left-text h3 {
     text-align: center;
     font-size: 1.8rem;
@@ -327,53 +379,54 @@
   }
 
   .web-card {
-    min-width: 180px;
-    max-width: 180px;
-    width: 180px;
-    height: 260px;
-    padding: 12px;
+    min-width: 260px;
+    max-width: 260px;
+    height: 370px;
+    padding: 14px;
     scroll-snap-align: start;
   }
 
   .card-icon {
-    margin: 12px 0;
-    height: 85px;
+    margin: 14px 0;
+    height: 110px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
   .card-icon img {
-    max-width: 120px;
-    max-height: 75px;
+    max-width: 100%;
+    max-height: 100%;
     width: auto;
     height: auto;
     object-fit: contain;
-    border-radius: 6px;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 4px;
   }
 
   .card-image {
-    max-width: 120px;
-    max-height: 85px;
+    max-width: 100%;
+    max-height: 150px;
     width: auto;
     height: auto;
     object-fit: contain;
-    border-radius: 6px;
+    border-radius: 8px;
     background-color: #fff;
-    padding: 3px;
+    padding: 4px;
     margin: 8px auto;
   }
 
   .web-card h3 {
-    font-size: 0.95rem;
-    margin: 8px 0 4px 0;
+    font-size: 1rem;
+    margin: 10px 0 6px 0;
   }
 
   .web-card p {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     margin: 4px 0;
   }
-  
+
   .left-text h3 {
     font-size: 1.6rem;
     font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
@@ -384,10 +437,10 @@
 
 @media (max-width: 360px) {
   .web-card {
-    min-width: 160px;
-    max-width: 160px;
-    width: 160px;
-    height: 240px;
+    min-width: 210px;
+    max-width: 210px;
+    width: 210px;
+    height: 300px;
     padding: 10px;
     scroll-snap-align: start;
   }
@@ -410,8 +463,8 @@
   }
 
   .card-image {
-    max-width: 110px;
-    max-height: 75px;
+    max-width: 160px;
+    max-height: 120px;
     width: auto;
     height: auto;
     object-fit: contain;
@@ -430,7 +483,7 @@
     font-size: 0.75rem;
     margin: 3px 0;
   }
-  
+
   .left-text h3 {
     font-size: 1.4rem;
   }
