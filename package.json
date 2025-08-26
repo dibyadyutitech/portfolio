@@ -4,8 +4,8 @@
   "description": "Personal portfolio website showcasing skills, projects, and creativity",
   "main": "index.html",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "dev": "python -m http.server 8000",
+    "start": "npx serve . -p 8000",
+    "dev": "npx serve . -p 8000",
     "build": "echo 'No build process needed for static site'",
     "test": "echo 'No tests specified'"
   },
