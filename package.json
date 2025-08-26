@@ -1,0 +1,28 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Personal portfolio website showcasing skills, projects, and creativity",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'No build process needed for static site'",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [
+    "portfolio",
+    "website",
+    "personal",
+    "projects",
+    "creative"
+  ],
+  "author": "Dibyadyuti Das",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DibyadyutiDas/portfolio"
+  },
+  "homepage": "https://dibyadyuti.me",
+  "devDependencies": {},
+  "dependencies": {}
+}
