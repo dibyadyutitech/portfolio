@@ -294,6 +294,7 @@ class NothingFont {
         // Find all elements with nothing-font class
         const elements = document.querySelectorAll('.nothing-font');
         console.log('Found nothing-font elements:', elements.length);
+        console.log('Elements found:', elements);
         elements.forEach((element, index) => {
             console.log(`Converting element ${index}:`, element.textContent);
             this.convertToMatrix(element);
