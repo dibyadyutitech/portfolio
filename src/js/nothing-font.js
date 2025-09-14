@@ -565,28 +565,37 @@ function initializeNothingFont() {
     }
     
     window.nothingFont.init();
+    
+    // Force process elements after a short delay
+    setTimeout(() => {
+        if (window.nothingFont) {
+            window.nothingFont.processElements();
+        }
+    }, 500);
 }
 
 // Multiple initialization strategies to ensure it works
-document.addEventListener('DOMContentLoaded', initializeNothingFont);
-
-// Fallback for when DOMContentLoaded has already fired
-if (document.readyState === 'loading') {
+setTimeout(() => {
     document.addEventListener('DOMContentLoaded', initializeNothingFont);
-} else {
-    // DOM is already ready
-    setTimeout(initializeNothingFont, 50);
-}
-
-// Additional fallback on window load
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        if (!window.nothingFont || !window.nothingFont.isInitialized) {
-            console.log('Fallback: Initializing Nothing Font on window load');
-            initializeNothingFont();
-        }
-    }, 100);
-});
+    
+    // Fallback for when DOMContentLoaded has already fired
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeNothingFont);
+    } else {
+        // DOM is already ready
+        setTimeout(initializeNothingFont, 100);
+    }
+    
+    // Additional fallback on window load
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            if (!window.nothingFont || !window.nothingFont.isInitialized) {
+                console.log('Fallback: Initializing Nothing Font on window load');
+                initializeNothingFont();
+            }
+        }, 200);
+    });
+}, 100);
 
 // Export for external use
 window.NothingFont = NothingFont;
