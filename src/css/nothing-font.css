@@ -119,9 +119,9 @@
 h1.nothing-font .dot,
 .title.nothing-font .dot,
 .hero-title.nothing-font .dot {
-  width: 8px !important;
-  height: 8px !important;
-  margin: 2px !important;
+  width: 12px !important;
+  height: 12px !important;
+  margin: 3px !important;
   background: currentColor !important;
   border-radius: 50% !important;
   display: inline-block !important;
@@ -130,21 +130,43 @@ h1.nothing-font .dot,
 h1.nothing-font .dot-row,
 .title.nothing-font .dot-row,
 .hero-title.nothing-font .dot-row {
+  height: 18px !important;
+  display: block !important;
+  white-space: nowrap !important;
+  line-height: 18px !important;
+}
+
+h1.nothing-font .letter,
+.title.nothing-font .letter,
+.hero-title.nothing-font .letter {
+  margin-right: 24px !important;
+  display: inline-block !important;
+  vertical-align: top !important;
+}
+
+h2.nothing-font .dot {
+  width: 8px !important;
+  height: 8px !important;
+  margin: 2px !important;
+  background: currentColor !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+}
+
+h2.nothing-font .dot-row {
   height: 12px !important;
   display: block !important;
   white-space: nowrap !important;
   line-height: 12px !important;
 }
 
-h1.nothing-font .letter,
-.title.nothing-font .letter,
-.hero-title.nothing-font .letter {
+h2.nothing-font .letter {
   margin-right: 16px !important;
   display: inline-block !important;
   vertical-align: top !important;
 }
 
-h2.nothing-font .dot {
+h3.nothing-font .dot {
   width: 6px !important;
   height: 6px !important;
   margin: 1.5px !important;
@@ -153,39 +175,33 @@ h2.nothing-font .dot {
   display: inline-block !important;
 }
 
-h2.nothing-font .dot-row {
+h3.nothing-font .dot-row {
   height: 9px !important;
   display: block !important;
   white-space: nowrap !important;
   line-height: 9px !important;
 }
 
-h2.nothing-font .letter {
+h3.nothing-font .letter {
   margin-right: 12px !important;
   display: inline-block !important;
   vertical-align: top !important;
 }
 
-h3.nothing-font .dot {
-  width: 5px !important;
-  height: 5px !important;
-  margin: 1.2px !important;
-  background: currentColor !important;
-  border-radius: 50% !important;
-  display: inline-block !important;
+/* Special sizing for main hero title */
+.hero .title.nothing-font .dot {
+  width: 16px !important;
+  height: 16px !important;
+  margin: 4px !important;
 }
 
-h3.nothing-font .dot-row {
-  height: 7.5px !important;
-  display: block !important;
-  white-space: nowrap !important;
-  line-height: 7.5px !important;
+.hero .title.nothing-font .dot-row {
+  height: 24px !important;
+  line-height: 24px !important;
 }
 
-h3.nothing-font .letter {
-  margin-right: 10px !important;
-  display: inline-block !important;
-  vertical-align: top !important;
+.hero .title.nothing-font .letter {
+  margin-right: 32px !important;
 }
 
 /* Responsive adjustments */
@@ -205,18 +221,105 @@ h3.nothing-font .letter {
   
   h1.nothing-font .dot,
   .title.nothing-font .dot { 
+    width: 10px !important; 
+    height: 10px !important; 
+    margin: 2.5px !important; 
+  }
+  h1.nothing-font .dot-row,
+  .title.nothing-font .dot-row { 
+    height: 15px !important; 
+    line-height: 15px !important;
+  }
+  h1.nothing-font .letter,
+  .title.nothing-font .letter { 
+    margin-right: 20px !important; 
+  }
+  
+  .hero .title.nothing-font .dot {
+    width: 12px !important;
+    height: 12px !important;
+    margin: 3px !important;
+  }
+  
+  .hero .title.nothing-font .dot-row {
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  
+  .hero .title.nothing-font .letter {
+    margin-right: 24px !important;
+  }
+  
+  h2.nothing-font .dot { 
     width: 6px !important; 
     height: 6px !important; 
     margin: 1.5px !important; 
   }
-  h1.nothing-font .dot-row,
-  .title.nothing-font .dot-row { 
+  h2.nothing-font .dot-row { 
     height: 9px !important; 
     line-height: 9px !important;
   }
+  h2.nothing-font .letter { 
+    margin-right: 12px !important; 
+  }
+  
+  h3.nothing-font .dot { 
+    width: 5px !important; 
+    height: 5px !important; 
+    margin: 1.2px !important; 
+  }
+  h3.nothing-font .dot-row { 
+    height: 7.5px !important; 
+    line-height: 7.5px !important;
+  }
+  h3.nothing-font .letter { 
+    margin-right: 10px !important; 
+  }
+}
+
+@media (max-width: 480px) {
+  .nothing-font .dot { 
+    width: 3px !important; 
+    height: 3px !important; 
+    margin: 0.5px !important; 
+  }
+  .nothing-font .dot-row { 
+    height: 4px !important; 
+    line-height: 4px !important;
+  }
+  .nothing-font .letter { 
+    margin-right: 6px !important; 
+  }
+  
+  h1.nothing-font .dot,
+  .title.nothing-font .dot { 
+    width: 8px !important; 
+    height: 8px !important; 
+    margin: 2px !important; 
+  }
+  h1.nothing-font .dot-row,
+  .title.nothing-font .dot-row { 
+    height: 12px !important; 
+    line-height: 12px !important;
+  }
   h1.nothing-font .letter,
   .title.nothing-font .letter { 
-    margin-right: 12px !important; 
+    margin-right: 16px !important; 
+  }
+  
+  .hero .title.nothing-font .dot {
+    width: 8px !important;
+    height: 8px !important;
+    margin: 2px !important;
+  }
+  
+  .hero .title.nothing-font .dot-row {
+    height: 12px !important;
+    line-height: 12px !important;
+  }
+  
+  .hero .title.nothing-font .letter {
+    margin-right: 16px !important;
   }
   
   h2.nothing-font .dot { 
@@ -243,63 +346,6 @@ h3.nothing-font .letter {
   }
   h3.nothing-font .letter { 
     margin-right: 8px !important; 
-  }
-}
-
-@media (max-width: 480px) {
-  .nothing-font .dot { 
-    width: 3px !important; 
-    height: 3px !important; 
-    margin: 0.5px !important; 
-  }
-  .nothing-font .dot-row { 
-    height: 4px !important; 
-    line-height: 4px !important;
-  }
-  .nothing-font .letter { 
-    margin-right: 6px !important; 
-  }
-  
-  h1.nothing-font .dot,
-  .title.nothing-font .dot { 
-    width: 4px !important; 
-    height: 4px !important; 
-    margin: 1px !important; 
-  }
-  h1.nothing-font .dot-row,
-  .title.nothing-font .dot-row { 
-    height: 6px !important; 
-    line-height: 6px !important;
-  }
-  h1.nothing-font .letter,
-  .title.nothing-font .letter { 
-    margin-right: 8px !important; 
-  }
-  
-  h2.nothing-font .dot { 
-    width: 3.5px !important; 
-    height: 3.5px !important; 
-    margin: 0.5px !important; 
-  }
-  h2.nothing-font .dot-row { 
-    height: 5px !important; 
-    line-height: 5px !important;
-  }
-  h2.nothing-font .letter { 
-    margin-right: 7px !important; 
-  }
-  
-  h3.nothing-font .dot { 
-    width: 3px !important; 
-    height: 3px !important; 
-    margin: 0.5px !important; 
-  }
-  h3.nothing-font .dot-row { 
-    height: 4px !important; 
-    line-height: 4px !important;
-  }
-  h3.nothing-font .letter { 
-    margin-right: 6px !important; 
   }
 }
 
